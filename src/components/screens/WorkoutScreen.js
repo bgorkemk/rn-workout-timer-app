@@ -21,19 +21,10 @@ const {
     BREAK_CIRCLE_HALF,
     BREAK_CIRCLE_EMPTY,
     PAUSE_CIRCLE,
-    PAUSE_TINT,
     CIRCLE_COLOR,
     CIRCLE_WIDTH,
-    HEADER_WORKOUT,
-    HEADER_BREAK,
-    BUTTON_HEIGHT,
-    BUTTON_WIDTH,
     BUTTON_ADD_COLOR,
     BUTTON_RESET_COLOR,
-    BUTTON_START_COLOR,
-    BUTTON_STOP_COLOR,
-    FONT_COLOR,
-    BORDER_RADIUS,
     WORKOUT_BUTTON_WIDTH
 } = AppStyles;
 
@@ -201,7 +192,7 @@ export default class Workout extends Component {
 
                     {/* TOGGLE STAGE */}
                     <TouchableOpacity
-                        style={{ position: 'absolute', top: windowHeight /9, right: 30, zIndex: 5 }}
+                        style={{ position: 'absolute', top: windowHeight /7, right: 30, zIndex: 5 }}
                         onPress={() => {
                             this.clearInterval()
                             this.props.SettingsStore.toggleAppStage()
