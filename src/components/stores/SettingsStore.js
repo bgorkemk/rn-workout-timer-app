@@ -7,8 +7,8 @@ const appSettings_default = {
     TIMEOUT_SEC: "1000",
     MAX_POINTS_WORKOUT: "60",
     MAX_POINTS_BREAK: "30",
-    RED_TITLE: "WORKOUT",
-    GREEN_TITLE: "BREAK",
+    RED_TITLE: "Workout",
+    GREEN_TITLE: "Break",
     ADD_SECONDS: "15",
     VOLUME: "1",
     FIRST_TIME: "FIRST_TIME"
@@ -141,6 +141,11 @@ class SettingsStore {
 
         }
 
+    }
+
+    @action async defaultSettings() {
+        this.setAppSettings(appSettings_default);
+        this.getAppSettings();
     }
 
     @action changeValueFillRatioWorkout(value) {

@@ -14,6 +14,7 @@ const {
     CIRCLE_COLOR,
     COMMON_TINT,
     SETTINGS_BUTTON_WIDTH,
+    BUTTON_RESET_COLOR,
     SETTINGS_ELEMENT_HEIGHT,
     COLOR_SETTINGS_ELEMENT_TEXT,
     COLOR_SETTINGS_ELEMENT_INPUT,
@@ -39,9 +40,12 @@ export default class Settings extends Component {
         })
     }
     render() {
-        const { container, scrollViewContainer, buttonContainer, buttonContent, buttonText } = styles;
+        const { container, scrollViewContainer, buttonContainer, buttonContent, buttonText, headerStyle, headerTextStyle } = styles;
         return (
             <View style={container}>
+                <View style={headerStyle}>
+                    <Text style={headerTextStyle}>Settings</Text>
+                </View>
                 <ScrollView style={scrollViewContainer} contentContainerStyle={{ alignItems: 'center' }}>
                     {/* Red Title: Text Allowed */}
                     {/* keyboardType: number-pad, default */}
@@ -65,6 +69,12 @@ export default class Settings extends Component {
                     {/* Extra Time */}
                     <SettingElement title="Extra Time" placeholder={"+" + this.props.SettingsStore.ADD_SECONDS} value={this.props.SettingsStore.Changed_ADD_SECONDS} keyboardType="number-pad" type="ADD_SECONDS" maxLength={3} />
 
+                    {/* RESET SETTINGS */}
+                    <TouchableOpacity onPress={() => {
+                        this.props.SettingsStore.defaultSettings()
+                    }} style={[headerStyle, { width: windowWidth - 40, marginBottom: 30, backgroundColor: BUTTON_RESET_COLOR }]}>
+                        <Text style={[headerTextStyle, { fontSize: 30 }]}>Reset Settings</Text>
+                    </TouchableOpacity>
                 </ScrollView>
 
                 <View style={buttonContainer}>
@@ -73,7 +83,7 @@ export default class Settings extends Component {
                         onPress={() => this.props.SettingsStore.applySettings()}>
                         <Text
                             style={buttonText}>
-                            APPLY SETTINGS
+                            Apply Settings
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -85,11 +95,33 @@ export default class Settings extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: BACKGROUND_COLOR
+        backgroundColor: BACKGROUND_COLOR,
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center'
     },
     scrollViewContainer: {
         flex: 9,
+        width: windowWidth,
+        top: 20,
+        marginTop: 20,
+        marginBottom: 30,
         flexDirection: 'column',
+    },
+    headerStyle: {
+        top: 20,
+        width: windowWidth - 20,
+        height: windowHeight / 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: BORDER_RADIUS,
+        opacity: 0.95,
+        backgroundColor: HEADER_COLOR
+    },
+    headerTextStyle: {
+        fontSize: 45,
+        color: FONT_COLOR,
+        fontWeight: 'bold'
     },
     buttonContainer: {
         alignItems: 'center',
