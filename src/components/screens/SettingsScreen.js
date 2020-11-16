@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppStyles from '../../styles/AppStyles';
 import SettingElement from '../SettingElement';
+import { clearInterval } from './WorkoutScreen';
 
 const {
     windowWidth,
@@ -27,6 +28,16 @@ export default class Settings extends Component {
         super(props);
     }
 
+    componentDidMount() {
+        this.props.navigation.addListener('focus', () => {
+            clearInterval()
+        })
+    }
+    componentWillUnmount() {
+        this.props.navigation.removeListener('focus', () => {
+            // console.log('removed listener')
+        })
+    }
     render() {
         const { container, scrollViewContainer, buttonContainer, buttonContent, buttonText } = styles;
         return (
@@ -49,7 +60,7 @@ export default class Settings extends Component {
                     <SettingElement title={`${this.props.SettingsStore.GREEN_TITLE} Time`} placeholder={this.props.SettingsStore.MAX_POINTS_BREAK} value={this.props.SettingsStore.Changed_MAX_POINTS_BREAK} keyboardType="number-pad" type="MAX_POINTS_BREAK" maxLength={5} />
 
                     {/* Timer Interval */}
-                    <SettingElement title="Timer Interval" placeholder={this.props.SettingsStore.TIMER_INTERVAL} value={this.props.SettingsStore.Changed_TIMER_INTERVAL} keyboardType="number-pad" type="TIMER_INTERVAL" maxLength={8} />
+                    {/* <SettingElement title="Timer Interval" placeholder={this.props.SettingsStore.TIMER_INTERVAL} value={this.props.SettingsStore.Changed_TIMER_INTERVAL} keyboardType="number-pad" type="TIMER_INTERVAL" maxLength={8} /> */}
 
                     {/* Extra Time */}
                     <SettingElement title="Extra Time" placeholder={"+" + this.props.SettingsStore.ADD_SECONDS} value={this.props.SettingsStore.Changed_ADD_SECONDS} keyboardType="number-pad" type="ADD_SECONDS" maxLength={3} />

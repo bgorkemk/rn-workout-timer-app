@@ -31,9 +31,16 @@ const {
 const tickSound = new Sound('tick.mp3');
 const bellSound = new Sound('bell.mp3');
 
+
 let fillpercentBreak;
 let fillpercentWorkout;
 let number;
+let intervalCounter = null;
+
+export function clearInterval() {
+    window.clearInterval(intervalCounter);
+    intervalCounter = null
+}
 
 @inject('SettingsStore')
 @observer
@@ -42,17 +49,30 @@ export default class Workout extends Component {
         super(props)
         this.startStop = this.startStop.bind(this)
         this.resetProgressBar = this.resetProgressBar.bind(this)
-        this.clearInterval = this.clearInterval.bind(this)
         this.addSeconds = this.addSeconds.bind(this)
         this.playSound = this.playSound.bind(this)
         this.playBell = this.playBell.bind(this)
         this.stopSound = this.stopSound.bind(this)
 
-        this.state = {
-            intervalCounter: null,
-        }
         // console.log('WORKOUT EKRANI BASLATILDI')
     }
+
+    componentDidMount() {
+        this.props.navigation.addListener('focus', () => {
+            if (intervalCounter == null) {
+                this.props.SettingsStore.changeTimerRunning(false)
+            }
+            else {
+                console.log('not null')
+            }
+        })
+    }
+    componentWillUnmount() {
+        this.props.navigation.removeListener('focus', () => {
+            // console.log('removed listener')
+        })
+    }
+
 
     playSound() {
         tickSound.play()
@@ -69,7 +89,7 @@ export default class Workout extends Component {
     progressBar() {
         //mola kontrolü break true ise workout false ise break
         if (this.props.SettingsStore.BREAK_STAGE) {
-            this.state.intervalCounter = setInterval(() => {
+            intervalCounter = setInterval(() => {
                 if (this.props.SettingsStore.fillRatioBreak != 0) {
                     let number = this.props.SettingsStore.fillRatioBreak
                     number--
@@ -77,7 +97,7 @@ export default class Workout extends Component {
                     this.playSound();
                 }
                 else {
-                    this.clearInterval();
+                    clearInterval();
                     this.playBell();
                     setTimeout(() => {
                         this.resetProgressBar();
@@ -89,7 +109,7 @@ export default class Workout extends Component {
             this.props.SettingsStore.changeTimerRunning(true)
         }
         else {
-            this.state.intervalCounter = setInterval(() => {
+            intervalCounter = setInterval(() => {
                 if (this.props.SettingsStore.fillRatioWorkout != 0) {
                     let number = this.props.SettingsStore.fillRatioWorkout
                     number--
@@ -97,7 +117,7 @@ export default class Workout extends Component {
                     this.playSound();
                 }
                 else {
-                    this.clearInterval();
+                    clearInterval();
                     this.playBell();
                     setTimeout(() => {
                         this.resetProgressBar();
@@ -143,13 +163,13 @@ export default class Workout extends Component {
             this.stopSound();
         }
         else {
-            this.clearInterval()
+            clearInterval()
             this.props.SettingsStore.changeTimerRunning(false)
         }
     }
 
     resetProgressBar() {
-        this.clearInterval();
+        clearInterval();
         // RESETE BASTIGIMDA TEKRAR DEFAULT SANİYELERE AYARLASIN
         this.props.SettingsStore.changeValueNewMaxWorkout(this.props.SettingsStore.MAX_POINTS_WORKOUT)
         this.props.SettingsStore.changeValueNewMaxBreak(this.props.SettingsStore.MAX_POINTS_BREAK)
@@ -160,19 +180,13 @@ export default class Workout extends Component {
         this.props.SettingsStore.changeTimerRunning(false)
         this.props.SettingsStore.changePause(false)
 
-        this.setState({
-            intervalCounter: null
-        });
+        intervalCounter = null
 
         if (this.props.SettingsStore.START_AFTER_RESET) {
             setTimeout(() => {
                 this.startStop();
             }, 100);
         }
-    }
-
-    clearInterval() {
-        window.clearInterval(this.state.intervalCounter);
     }
 
     render() {
@@ -183,7 +197,7 @@ export default class Workout extends Component {
             fillpercentWorkout = (this.props.SettingsStore.fillRatioWorkout / this.props.SettingsStore.NEW_MAX_POINTS_WORKOUT) * 100;
             fillpercentBreak = (this.props.SettingsStore.fillRatioBreak / this.props.SettingsStore.NEW_MAX_POINTS_BREAK) * 100;
             return (
-                <View style={[container, {zIndex: -1}]}>
+                <View style={[container, { zIndex: -1 }]}>
                     {!this.props.SettingsStore.BREAK_STAGE ?
                         <Header title={this.props.SettingsStore.RED_TITLE} color={(WORKOUT_CIRCLE_FULL)}></Header>
                         :
@@ -192,9 +206,9 @@ export default class Workout extends Component {
 
                     {/* TOGGLE STAGE */}
                     <TouchableOpacity
-                        style={{ position: 'absolute', top: windowHeight /7, right: 30, zIndex: 5 }}
+                        style={{ position: 'absolute', top: windowHeight / 7, right: 30, zIndex: 5 }}
                         onPress={() => {
-                            this.clearInterval()
+                            clearInterval()
                             this.props.SettingsStore.toggleAppStage()
                         }}
                     >
@@ -281,7 +295,6 @@ export default class Workout extends Component {
 
                     {/* SAYAC VE PAUSE */}
                     <View style={[progressBarText, { flexDirection: 'row' }]}>
-                        {/* BURDA KALDIN GÖRKEM mid phase ekleme*/}
                         {(this.props.SettingsStore.TIMER_RUNNING && !this.props.SettingsStore.PAUSED) ?
                             <Text></Text>
                             :

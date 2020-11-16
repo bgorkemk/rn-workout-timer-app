@@ -44,7 +44,7 @@ class SettingsStore {
     @observable Changed_GREEN_TITLE = "";
     @observable Changed_MAX_POINTS_WORKOUT = 1;
     @observable Changed_MAX_POINTS_BREAK = 1;
-    @observable Changed_TIMER_INTERVAL = 1;
+    // @observable Changed_TIMER_INTERVAL = 1;
     @observable Changed_ADD_SECONDS = 1;
 
     // MAKE DEFAUT BUTTON
@@ -59,14 +59,21 @@ class SettingsStore {
                 await AsyncStorage.setItem('GREEN_TITLE', this.Changed_GREEN_TITLE);
             }
             if (this.Changed_MAX_POINTS_WORKOUT.toString() != "") {
+                if (this.Changed_MAX_POINTS_WORKOUT <= 0) {
+                    this.Changed_MAX_POINTS_WORKOUT = 1
+                }
                 await AsyncStorage.setItem('MAX_POINTS_WORKOUT', (this.Changed_MAX_POINTS_WORKOUT).toString());
             }
             if (this.Changed_MAX_POINTS_BREAK.toString() != "") {
+                if (this.Changed_MAX_POINTS_BREAK <= 0) {
+                    this.Changed_MAX_POINTS_BREAK = 1
+                }
                 await AsyncStorage.setItem('MAX_POINTS_BREAK', (this.Changed_MAX_POINTS_BREAK).toString());
             }
-            if (this.Changed_TIMER_INTERVAL.toString() != "") {
-                await AsyncStorage.setItem('TIMER_INTERVAL', (this.Changed_TIMER_INTERVAL).toString());
-            }
+            // OLD FUNC DONT NECESSARY
+            // if (this.Changed_TIMER_INTERVAL.toString() != "") {
+            //     await AsyncStorage.setItem('TIMER_INTERVAL', (this.Changed_TIMER_INTERVAL).toString());
+            // }
             if (this.Changed_ADD_SECONDS.toString() != "") {
                 await AsyncStorage.setItem('ADD_SECONDS', (this.Changed_ADD_SECONDS).toString());
             }
@@ -96,7 +103,7 @@ class SettingsStore {
                 this.Changed_GREEN_TITLE = value
                 break;
             case 'MAX_POINTS_WORKOUT':
-                value = value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, '') // numeric-pad control
+                value = value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, '') // numeric-pad control            
                 this.Changed_MAX_POINTS_WORKOUT = (value)
                 break;
             case 'MAX_POINTS_BREAK':
@@ -228,7 +235,7 @@ class SettingsStore {
         //numeric
         this.Changed_MAX_POINTS_WORKOUT = this.MAX_POINTS_WORKOUT
         this.Changed_MAX_POINTS_BREAK = this.MAX_POINTS_BREAK
-        this.Changed_TIMER_INTERVAL = this.TIMER_INTERVAL
+        // this.Changed_TIMER_INTERVAL = this.TIMER_INTERVAL
         this.Changed_ADD_SECONDS = this.ADD_SECONDS
 
 

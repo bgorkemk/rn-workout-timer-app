@@ -1,6 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { clearInterval } from './WorkoutScreen';
 
 @inject('SettingsStore')
 @observer
@@ -8,21 +9,27 @@ export default class Info extends Component {
     constructor(props) {
         super(props)
     }
-    // componentDidMount() {
-    //     console.log('INFO EKRANI BASLATILDI')
-    // }
 
-    // componentWillUnmount() {
-    //     console.log('INFO EKRANI YOKEDİLDİ')
-    // }
+    componentDidMount() {
+        this.props.navigation.addListener('focus', () => {
+            clearInterval()
+        })
+    }
+    componentWillUnmount() {
+        this.props.navigation.removeListener('focus', () => {
+            // console.log('removed listener')
+        })
+    }
+
     render() {
         const { container } = styles;
         return (
             <View style={container}>
                 <TouchableOpacity
-                    onPress={() => this.props.SettingsStore.applySettings()}>
+                    onPress={() => {
+                    }}>
                     <View>
-                        <Text>{this.props.SettingsStore.RED_TITLE}</Text>
+                        <Text>idk</Text>
                     </View>
                 </TouchableOpacity>
             </View>

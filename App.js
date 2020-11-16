@@ -56,7 +56,7 @@ export default class App extends Component {
       <Provider SettingsStore={SettingsStore}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName="Workout"
+            initialRouteName="Info"
             tabBarOptions={{
               activeTintColor: 'tomato',
               activeBackgroundColor: BACKGROUND_COLOR,
@@ -65,15 +65,13 @@ export default class App extends Component {
               labelPosition: 'below-icon',
             }}
           >
-
             <Tab.Screen
               name="Info"
               options={{
                 tabBarIcon: () => (
                   <Icon name="info" size={25} color={FONT_COLOR} />
                 )
-              }}
-            >
+              }}>
               {props => <Info {...props} />}
             </Tab.Screen>
             <Tab.Screen
@@ -82,8 +80,7 @@ export default class App extends Component {
                 tabBarIcon: () => (
                   <Icon name="dumbbell" size={25} color={FONT_COLOR} />
                 )
-              }}
-            >
+              }}>
               {props => <Workout {...props} />}
             </Tab.Screen>
             <Tab.Screen
@@ -92,8 +89,7 @@ export default class App extends Component {
                 tabBarIcon: () => (
                   <Icon name="cog" size={25} color={FONT_COLOR} />
                 ),
-              }}
-            >
+              }}>
               {props => <Settings {...props} />}
             </Tab.Screen>
           </Tab.Navigator>
