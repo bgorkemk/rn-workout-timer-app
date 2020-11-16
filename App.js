@@ -4,6 +4,7 @@ import { Provider } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { CustomTabBar } from './src/components/CustomTabBar';
 import Info from './src/components/screens/InfoScreen';
 import Settings from './src/components/screens/SettingsScreen';
 import Workout from './src/components/screens/WorkoutScreen';
@@ -57,6 +58,7 @@ export default class App extends Component {
         <NavigationContainer>
           <Tab.Navigator
             initialRouteName="Info"
+            tabBar={props => <CustomTabBar {...props} />}
             tabBarOptions={{
               activeTintColor: 'tomato',
               activeBackgroundColor: BACKGROUND_COLOR,
