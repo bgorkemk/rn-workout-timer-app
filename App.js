@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CustomTabBar } from './src/components/CustomTabBar';
 import Info from './src/components/screens/InfoScreen';
 import Settings from './src/components/screens/SettingsScreen';
@@ -58,40 +57,17 @@ export default class App extends Component {
         <NavigationContainer>
           <Tab.Navigator
             initialRouteName="Info"
-            tabBar={props => <CustomTabBar {...props} />}
-            tabBarOptions={{
-              activeTintColor: 'tomato',
-              activeBackgroundColor: BACKGROUND_COLOR,
-              inactiveTintColor: 'black',
-              inactiveBackgroundColor: BACKGROUND_COLOR,
-              labelPosition: 'below-icon',
-            }}
-          >
+            tabBar={props => <CustomTabBar {...props} />}>
             <Tab.Screen
-              name="Info"
-              options={{
-                tabBarIcon: () => (
-                  <Icon name="info" size={25} color={FONT_COLOR} />
-                )
-              }}>
+              name="Info">
               {props => <Info {...props} />}
             </Tab.Screen>
             <Tab.Screen
-              name="Workout"
-              options={{
-                tabBarIcon: () => (
-                  <Icon name="dumbbell" size={25} color={FONT_COLOR} />
-                )
-              }}>
+              name="Workout">
               {props => <Workout {...props} />}
             </Tab.Screen>
             <Tab.Screen
-              name="Settings"
-              options={{
-                tabBarIcon: () => (
-                  <Icon name="cog" size={25} color={FONT_COLOR} />
-                ),
-              }}>
+              name="Settings">
               {props => <Settings {...props} />}
             </Tab.Screen>
           </Tab.Navigator>
