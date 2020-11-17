@@ -13,7 +13,8 @@ const appSettings_default = {
     VOLUME: "1",
     FIRST_TIME: "FIRST_TIME"
 }
-
+let obj = {}
+let propertyNames;
 
 class SettingsStore {
     constructor() {
@@ -39,6 +40,8 @@ class SettingsStore {
     @observable START_AFTER_RESET = false;
     @observable TIMER_RUNNING = false;
     @observable PAUSED = false;
+    @observable DAYS = {};
+    @observable DAYS_ = {};
 
     @observable Changed_RED_TITLE = "";
     @observable Changed_GREEN_TITLE = "";
@@ -193,7 +196,29 @@ class SettingsStore {
         this.TIMER_RUNNING = state
     }
 
+    @action addDays(value) {
+        // DAHA ÖNCE BASILIP BASILMADIĞI KONTROLÜ        
+        propertyNames = Object.keys(this.DAYS)
+        propertyNames.forEach(element => {
+            if (element == Object.keys(value[0]).toString()) {
+                console.log('exist')
+                // DAYS objesinden sil
+                this.removeDays(value)
+            }
+            else {
 
+            }
+        });
+        // console.log(Object.keys(this.DAYS))
+        // console.log(Object.keys(value[0]))
+
+        Object.assign(this.DAYS, ...value)
+        Object.assign(this.DAYS_, ...value)
+    }
+    @action removeDays(value) {
+        propertyNames = Object.keys(this.DAYS)
+        console.log(Object.keys(value[0]).toString() + " silinecek")
+    }
 
     setAppSettings = async (data) => {
         try {

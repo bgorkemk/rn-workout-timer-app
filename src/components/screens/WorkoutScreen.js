@@ -316,7 +316,7 @@ export default class Workout extends Component {
                     {/* BUTTONS */}
                     <View style={buttons}>
                         {/* ADD SECONDS BUTTON */}
-                        <Button title="resetbutton" text="RESET" func={this.resetProgressBar} color={BUTTON_RESET_COLOR} width={WORKOUT_BUTTON_WIDTH} />
+                        <Button title="resetbutton" text="Reset" func={this.resetProgressBar} color={BUTTON_RESET_COLOR} width={WORKOUT_BUTTON_WIDTH} />
                         {/* RESET BUTTON */}
                         <Button title="addbutton" text={`+${this.props.SettingsStore.ADD_SECONDS}`} func={this.addSeconds} color={BUTTON_ADD_COLOR} width={WORKOUT_BUTTON_WIDTH} />
                     </View>
