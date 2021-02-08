@@ -16,10 +16,13 @@ const appSettings_default = {
 let obj = {}
 let propertyNames;
 
+let objectCount;
+
 class SettingsStore {
     constructor() {
         autorun(() => {
-            this.loadDataForFirstTime()
+            this.getSavedDates();
+            this.loadDataForFirstTime();
         })
     }
 
@@ -40,8 +43,16 @@ class SettingsStore {
     @observable START_AFTER_RESET = false;
     @observable TIMER_RUNNING = false;
     @observable PAUSED = false;
-    @observable DAYS = {};
-    @observable DAYS_ = {};
+    @observable DAYS = {
+        //  "2021-02-01": { "selected": true }, 
+        //  "2021-02-02": { "selected": true } 
+    };
+    @observable DAYS_ = {
+        //  "2021-02-01": { "selected": true }, 
+        //  "2021-02-02": { "selected": true } 
+    };
+
+    @observable totalWorkout = 0;
 
     @observable Changed_RED_TITLE = "";
     @observable Changed_GREEN_TITLE = "";
@@ -196,28 +207,87 @@ class SettingsStore {
         this.TIMER_RUNNING = state
     }
 
+    @action getTotalWorkoutCount (){
+        this.totalWorkout = Object.keys(this.DAYS).length; 
+    }
+
+    @action copyObjectElements (value){        
+        Object.assign(this.DAYS, value); 
+        Object.assign(this.DAYS_, value); 
+    }
+    // ASYNC STORAGE
+    @action addNewDates = async () => {
+        try {
+            await AsyncStorage.removeItem('DAYS');
+            await AsyncStorage.setItem('DAYS', JSON.stringify(this.DAYS));            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    @action removeSavedDates = async () => {
+        try {
+            await AsyncStorage.removeItem('DAYS');  
+            this.getTotalWorkoutCount();
+
+        } catch (error) {
+            console.log(error)            
+        }
+    }
+
+    @action getSavedDates = async () => {
+        try {
+            let object = await AsyncStorage.getItem('DAYS');
+            this.copyObjectElements(JSON.parse(object));  
+            this.getTotalWorkoutCount()
+            
+        } catch (error) {
+            console.log(error)            
+        }
+    }
+
     @action addDays(value) {
         // DAHA ÖNCE BASILIP BASILMADIĞI KONTROLÜ        
-        propertyNames = Object.keys(this.DAYS)
-        propertyNames.forEach(element => {
-            if (element == Object.keys(value[0]).toString()) {
-                console.log('exist')
-                // DAYS objesinden sil
-                this.removeDays(value)
-            }
-            else {
-
-            }
-        });
-        // console.log(Object.keys(this.DAYS))
-        // console.log(Object.keys(value[0]))
-
-        Object.assign(this.DAYS, ...value)
-        Object.assign(this.DAYS_, ...value)
+        propertyNames = Object.keys(this.DAYS);  
+        
+        objectCount = Object.keys(this.DAYS).length;
+        // EGER HIC KAYIT YOKSA EKLE
+        if (objectCount == 0) {
+            Object.assign(this.DAYS, ...value)
+            Object.assign(this.DAYS_, ...value) 
+            this.addNewDates();  
+            objectCount++;             
+        }
+        else{
+           propertyNames.forEach(element => {
+                if (element == Object.keys(value[0]).toString()) {
+                    // console.log('LİSTEDE VAR')
+                    // DAYS objesinden sil                
+                    this.removeDays(value);                    
+                }
+                else {
+                    // BURADA EKLENİYOR
+                    Object.assign(this.DAYS, ...value)
+                    Object.assign(this.DAYS_, ...value)
+                    this.addNewDates();  
+                }        
+            });                       
+        }
+        
+        // console.log(objectCount);
     }
-    @action removeDays(value) {
-        propertyNames = Object.keys(this.DAYS)
-        console.log(Object.keys(value[0]).toString() + " silinecek")
+    @action removeDays(value) {        
+        // for (const prop of Object.getOwnPropertyNames(this.DAYS)) {
+        //     delete this.DAYS[prop];
+        //   }
+        // for (const prop of Object.getOwnPropertyNames(this.DAYS_)) {
+        //     delete this.DAYS_[prop];
+        //   }
+        // console.log(Object.keys(value[0]).toString() + " SİLİNECEK")                  
+          delete this.DAYS[Object.getOwnPropertyNames(value[0])];
+          delete this.DAYS_[Object.getOwnPropertyNames(value[0])];
+          objectCount--;      
+        
     }
 
     setAppSettings = async (data) => {
@@ -269,8 +339,10 @@ class SettingsStore {
         this.Changed_ADD_SECONDS = this.ADD_SECONDS
 
 
-        console.log('AYARLAR YÜKLENDİ')
+        // console.log('AYARLAR YÜKLENDİ')
     }
+
+    
 }
 
 export default new SettingsStore();

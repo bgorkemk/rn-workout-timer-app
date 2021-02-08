@@ -77,12 +77,13 @@ export function CustomTabBar({ state, descriptors, navigation }) {
                                     onPress={onPress}
                                     style={touchableOpacityStyle}>
                                     {
+                                        // info info icon
                                         isFocused ?
                                             <Icon name="chevron-right" size={15} style={{ paddingRight: 10 }} color={WORKOUT_CIRCLE_FULL} />
                                             :
                                             <View></View>
                                     }
-                                    <Icon name="info" size={28} color={FONT_COLOR} />
+                                    <Icon name="calendar-alt" size={28} color={FONT_COLOR} />
                                     {
                                         isFocused ?
                                             <Icon name="chevron-left" size={15} style={{ paddingLeft: 10 }} color={WORKOUT_CIRCLE_FULL} />

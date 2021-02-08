@@ -10,6 +10,7 @@ import Workout from './src/components/screens/WorkoutScreen';
 import SettingsStore from './src/components/stores/SettingsStore';
 import AppStyles from './src/styles/AppStyles';
 
+
 const {
   FONT_COLOR,
   BACKGROUND_COLOR
@@ -49,6 +50,7 @@ const Tab = createBottomTabNavigator();
 export default class App extends Component {
   constructor(props) {
     super(props);
+    
   }
 
   render() {
@@ -56,7 +58,7 @@ export default class App extends Component {
       <Provider SettingsStore={SettingsStore}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName="Info"
+            initialRouteName="Workout"
             tabBar={props => <CustomTabBar {...props} />}>
             <Tab.Screen
               name="Info">
