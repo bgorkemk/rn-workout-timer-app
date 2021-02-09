@@ -130,7 +130,7 @@ export default class Info extends Component {
                             }}>
                         <Text
                             style={buttonText}>
-                            {this.props.SettingsStore.totalWorkout}
+                            Total: {this.props.SettingsStore.totalWorkout} Days
                         </Text>
                     </TouchableOpacity>
                 </View>
