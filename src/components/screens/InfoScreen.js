@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AppStyles from '../../styles/AppStyles';
 import { clearInterval } from './WorkoutScreen';
@@ -13,7 +13,7 @@ const {
     HEADER_COLOR,
     FONT_COLOR,
     WORKOUT_BUTTON_HEIGHT,
-    SETTINGS_BUTTON_WIDTH    
+    SETTINGS_BUTTON_WIDTH
 } = AppStyles
 
 const dayFormat = {
@@ -27,7 +27,6 @@ let markedDays = {
     // "2020-11-01": { "selected": true }, 
     // "2020-11-02": { "selected": true } 
 }
-
 
 let newDate = {}
 let temp = [];
@@ -47,11 +46,11 @@ export default class Info extends Component {
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            clearInterval()
-             this.setState({
-                 switchRef: !this.state.switchRef
-             })
-        })        
+            clearInterval();
+            // this.setState({
+            //     switchRef: !this.state.switchRef
+            // })
+        })
     }
     componentWillUnmount() {
         this.props.navigation.removeListener('focus', () => {
@@ -59,13 +58,15 @@ export default class Info extends Component {
         })
     }
 
+
+
     render() {
         const { container, calendarStyle, headerStyle, headerTextStyle, buttonContainer, buttonContent, buttonText } = styles;
         return (
-            <View style={container}>  
+            <View style={container}>
                 <View style={headerStyle}>
                     <Text style={headerTextStyle}>Calendar</Text>
-                </View>              
+                </View>
                 <Calendar
                     maxDate={new Date()}
                     firstDay={1}
@@ -76,16 +77,9 @@ export default class Info extends Component {
                         selectedDayTextColor: '#ffffff'
                     }}
                     onDayPress={(day) => {
-                        if (this.state.switchRef) {
-                            this.setState({
-                                switchRef: false
-                            })
-                        }
-                        else {
-                            this.setState({
-                                switchRef: true
-                            })
-                        }
+                        this.setState({
+                            switchRef: !this.state.switchRef
+                        });
                         newDate = { [day.dateString]: dayFormat.settings };
                         temp = []
                         temp.push(newDate)
@@ -96,7 +90,7 @@ export default class Info extends Component {
                     markedDates={this.state.switchRef ? this.props.SettingsStore.DAYS : this.props.SettingsStore.DAYS_}
                 />
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={{ height: 100 }}
                     onPress={() => {
                         // // markedDays = this.state.markedDates
@@ -113,25 +107,47 @@ export default class Info extends Component {
                         //     })
                         // }
                     }}>
-                    {/* <View>
+                    <View>
                         <Text style={{ color: 'white', fontSize: 24 }}>{this.props.SettingsStore.totalWorkout}</Text>
-                    </View> */}
-                </TouchableOpacity>
+                    </View>
+                </TouchableOpacity> */}
                 <View style={buttonContainer}>
                     <TouchableOpacity
                         style={buttonContent}
                         onPress={() => {
-                            this.props.SettingsStore.removeSavedDates();
-                            
-                            // TODO: refresh screen when saved dates removed
-                            this.setState({
-                                switchRef: !this.state.switchRef
-                            })
-                            }}>
-                        <Text
-                            style={buttonText}>
-                            Total: {this.props.SettingsStore.totalWorkout} Days
-                        </Text>
+                            Alert.alert(
+                                'Days will be removed!',
+                                'Do you really want to clear calendar?',
+                                [
+                                    {
+                                        text: 'No',
+                                        onPress: () => {
+                                            // close alert
+                                        },
+                                        style: 'cancel',
+                                    },
+                                    {
+                                        text: 'YES', onPress: () => {
+                                            this.props.SettingsStore.removeSavedDates();
+                                            // this.setState({
+                                            //     switchRef: !this.state.switchRef
+                                            // });
+                                        }
+                                    },
+                                ]
+                            );
+                        }}>
+                        {
+                            this.props.SettingsStore.totalWorkout <= 1 ?
+                                <Text
+                                    style={buttonText}>
+                                    Total: {this.props.SettingsStore.totalWorkout} Day
+                            </Text> :
+                                <Text
+                                    style={buttonText}>
+                                    Total: {this.props.SettingsStore.totalWorkout} Days
+                            </Text>
+                        }
                     </TouchableOpacity>
                 </View>
             </View >
@@ -145,14 +161,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: BACKGROUND_COLOR
     },
-    calendarStyle: {        
+    calendarStyle: {
         marginTop: 50,
         borderWidth: 2,
         borderColor: 'gray',
         borderRadius: 15,
         width: windowWidth - 20,
         height: windowHeight / 2 - 10
-    },    
+    },
     headerStyle: {
         top: 20,
         width: windowWidth - 20,
@@ -178,7 +194,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',
-        marginTop: -9,
+        bottom: 0,
+        marginTop: 91,
         borderRadius: BORDER_RADIUS,
         opacity: 0.9,
         backgroundColor: HEADER_COLOR

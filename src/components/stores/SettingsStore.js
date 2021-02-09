@@ -63,6 +63,29 @@ class SettingsStore {
 
     // MAKE DEFAUT BUTTON
     // TIMER INTERVALİN 100DEN KÜCÜK OLMAMA KONTROLÜ
+    @observable ADS_COUNTER = 0;
+
+    @action async ADS_COUNTER_INCREAMENT() {
+        this.ADS_COUNTER = await AsyncStorage.getItem('ADS_COUNTER');
+
+        if (this.ADS_COUNTER == null) {
+            this.ADS_COUNTER = 0;
+            await AsyncStorage.setItem('ADS_COUNTER', this.ADS_COUNTER.toString());
+        }
+        else {
+            if (this.ADS_COUNTER >= 250) {
+                this.ADS_COUNTER = 0;
+            }
+            try {
+                let number = parseInt(this.ADS_COUNTER);
+                number++;
+                await AsyncStorage.setItem('ADS_COUNTER', number.toString());
+            } catch (error) {
+
+            }
+        }
+        console.log(this.ADS_COUNTER)
+    }
 
     @action async applySettings() {
         try {
@@ -207,19 +230,23 @@ class SettingsStore {
         this.TIMER_RUNNING = state
     }
 
-    @action getTotalWorkoutCount (){
-        this.totalWorkout = Object.keys(this.DAYS).length; 
+    @action getTotalWorkoutCount() {
+        this.totalWorkout = Object.keys(this.DAYS).length;
     }
 
-    @action copyObjectElements (value){        
-        Object.assign(this.DAYS, value); 
-        Object.assign(this.DAYS_, value); 
+    @action setTotalWorkoutCount() {
+        this.totalWorkout = 0;
+    }
+
+    @action copyObjectElements(value) {
+        Object.assign(this.DAYS, value);
+        Object.assign(this.DAYS_, value);
     }
     // ASYNC STORAGE
     @action addNewDates = async () => {
         try {
             await AsyncStorage.removeItem('DAYS');
-            await AsyncStorage.setItem('DAYS', JSON.stringify(this.DAYS));            
+            await AsyncStorage.setItem('DAYS', JSON.stringify(this.DAYS));
         } catch (error) {
             console.log(error)
         }
@@ -227,56 +254,62 @@ class SettingsStore {
 
     @action removeSavedDates = async () => {
         try {
-            await AsyncStorage.removeItem('DAYS');  
+            await AsyncStorage.removeItem('DAYS');
+            this.DAYS = {};
+            this.DAYS_ = {};
             this.getTotalWorkoutCount();
+            let object = await AsyncStorage.getItem('DAYS');
+            this.copyObjectElements(JSON.parse(object));
 
         } catch (error) {
-            console.log(error)            
+            console.log(error)
         }
     }
 
     @action getSavedDates = async () => {
         try {
             let object = await AsyncStorage.getItem('DAYS');
-            this.copyObjectElements(JSON.parse(object));  
-            this.getTotalWorkoutCount()
-            
+            this.copyObjectElements(JSON.parse(object));
+            this.getTotalWorkoutCount();
+
         } catch (error) {
-            console.log(error)            
+            console.log(error)
         }
     }
 
     @action addDays(value) {
+        // ADS
+        this.ADS_COUNTER_INCREAMENT();
         // DAHA ÖNCE BASILIP BASILMADIĞI KONTROLÜ        
-        propertyNames = Object.keys(this.DAYS);  
-        
+        propertyNames = Object.keys(this.DAYS);
+
         objectCount = Object.keys(this.DAYS).length;
         // EGER HIC KAYIT YOKSA EKLE
         if (objectCount == 0) {
             Object.assign(this.DAYS, ...value)
-            Object.assign(this.DAYS_, ...value) 
-            this.addNewDates();  
-            objectCount++;             
+            Object.assign(this.DAYS_, ...value)
+            this.addNewDates();
+            objectCount++;
         }
-        else{
-           propertyNames.forEach(element => {
+        else {
+            propertyNames.forEach(element => {
                 if (element == Object.keys(value[0]).toString()) {
                     // console.log('LİSTEDE VAR')
                     // DAYS objesinden sil                
-                    this.removeDays(value);                    
+                    this.removeDays(value);
                 }
                 else {
                     // BURADA EKLENİYOR
                     Object.assign(this.DAYS, ...value)
                     Object.assign(this.DAYS_, ...value)
-                    this.addNewDates();  
-                }        
-            });                       
+                    this.addNewDates();
+                }
+            });
         }
-        
+
         // console.log(objectCount);
     }
-    @action removeDays(value) {        
+    @action removeDays(value) {
         // for (const prop of Object.getOwnPropertyNames(this.DAYS)) {
         //     delete this.DAYS[prop];
         //   }
@@ -284,10 +317,10 @@ class SettingsStore {
         //     delete this.DAYS_[prop];
         //   }
         // console.log(Object.keys(value[0]).toString() + " SİLİNECEK")                  
-          delete this.DAYS[Object.getOwnPropertyNames(value[0])];
-          delete this.DAYS_[Object.getOwnPropertyNames(value[0])];
-          objectCount--;      
-        
+        delete this.DAYS[Object.getOwnPropertyNames(value[0])];
+        delete this.DAYS_[Object.getOwnPropertyNames(value[0])];
+        objectCount--;
+
     }
 
     setAppSettings = async (data) => {
@@ -342,7 +375,7 @@ class SettingsStore {
         // console.log('AYARLAR YÜKLENDİ')
     }
 
-    
+
 }
 
 export default new SettingsStore();

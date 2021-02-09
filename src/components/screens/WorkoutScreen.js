@@ -155,6 +155,7 @@ export default class Workout extends Component {
                 this.props.SettingsStore.changeValueNewMaxWorkout(this.props.SettingsStore.fillRatioWorkout)
             }
         }
+        this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
     }
 
     startStop() {
@@ -166,6 +167,7 @@ export default class Workout extends Component {
             clearInterval()
             this.props.SettingsStore.changeTimerRunning(false)
         }
+        this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
     }
 
     resetProgressBar() {
@@ -187,6 +189,9 @@ export default class Workout extends Component {
                 this.startStop();
             }, 100);
         }
+
+        this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
+
     }
 
     render() {
@@ -209,7 +214,8 @@ export default class Workout extends Component {
                         style={{ position: 'absolute', top: windowHeight / 7, right: 30, zIndex: 5 }}
                         onPress={() => {
                             clearInterval()
-                            this.props.SettingsStore.toggleAppStage()
+                            this.props.SettingsStore.toggleAppStage();
+                            this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
                         }}
                     >
                         {

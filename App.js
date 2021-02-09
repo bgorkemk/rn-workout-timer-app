@@ -61,7 +61,7 @@ export default class App extends Component {
             initialRouteName="Workout"
             tabBar={props => <CustomTabBar {...props} />}>
             <Tab.Screen
-              name="Info">
+              name="Info"              >
               {props => <Info {...props} />}
             </Tab.Screen>
             <Tab.Screen

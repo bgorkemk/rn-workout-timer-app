@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AppStyles from '../styles/AppStyles';
 
@@ -39,6 +39,8 @@ export function CustomTabBar({ state, descriptors, navigation }) {
                         canPreventDefault: true,
                     });
 
+                    Keyboard.dismiss();
+
                     if (!isFocused && !event.defaultPrevented) {
                         navigation.navigate(route.name);
                     }
@@ -50,7 +52,7 @@ export function CustomTabBar({ state, descriptors, navigation }) {
                             return (
                                 <TouchableOpacity
                                     key={route.key}
-                                    onPress={onPress}
+                                    onPress={(onPress)}
                                     style={touchableOpacityStyle}>
                                     {
                                         isFocused ?
