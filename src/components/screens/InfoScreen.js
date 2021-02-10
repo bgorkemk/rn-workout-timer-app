@@ -61,6 +61,9 @@ export default class Info extends Component {
 
 
     render() {
+        if (this.props.SettingsStore.ADS_COUNTER % 10 == 0) {
+            // SHOW ADS
+        }
         const { container, calendarStyle, headerStyle, headerTextStyle, buttonContainer, buttonContent, buttonText } = styles;
         return (
             <View style={container}>

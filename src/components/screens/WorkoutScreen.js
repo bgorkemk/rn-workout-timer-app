@@ -194,7 +194,7 @@ export default class Workout extends Component {
 
     }
 
-    render() {
+    render() {        
         tickSound.setVolume(this.props.SettingsStore.VOLUME);
         bellSound.setVolume(this.props.SettingsStore.VOLUME);
         const { container, buttons, progressBarText } = styles;
