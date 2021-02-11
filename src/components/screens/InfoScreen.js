@@ -1,10 +1,10 @@
+import { InterstitialAd, TestIds } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AppStyles from '../../styles/AppStyles';
 import { clearInterval } from './WorkoutScreen';
-
 const {
     windowWidth,
     windowHeight,
@@ -32,6 +32,14 @@ let newDate = {}
 let temp = [];
 let tempObj = {}
 
+
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing'],
+});
+
 //TODO gün secilince blue markla sonra button ile spor yaptım yapmadım kaydedebilsin 
 
 @inject('SettingsStore')
@@ -45,6 +53,7 @@ export default class Info extends Component {
     }
 
     componentDidMount() {
+        interstitial.load();
         this.props.navigation.addListener('focus', () => {
             clearInterval();
             // this.setState({
@@ -63,6 +72,8 @@ export default class Info extends Component {
     render() {
         if (this.props.SettingsStore.ADS_COUNTER % 10 == 0) {
             // SHOW ADS
+            //interstitial.show();
+            console.log('BOOM')
         }
         const { container, calendarStyle, headerStyle, headerTextStyle, buttonContainer, buttonContent, buttonText } = styles;
         return (
@@ -132,6 +143,7 @@ export default class Info extends Component {
                                     {
                                         text: 'YES', onPress: () => {
                                             this.props.SettingsStore.removeSavedDates();
+                                            interstitial.show();
                                             // this.setState({
                                             //     switchRef: !this.state.switchRef
                                             // });

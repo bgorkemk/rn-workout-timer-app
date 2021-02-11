@@ -9,6 +9,8 @@ import AppStyles from '../../styles/AppStyles';
 import Button from '../Button';
 import Header from '../Header';
 
+
+// TODO: MUTE SOUND BUTTON LIKE TOGGLE SCREEN
 const {
     windowWidth,
     windowHeight,
