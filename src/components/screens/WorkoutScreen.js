@@ -55,9 +55,12 @@ export default class Workout extends Component {
         this.playSound = this.playSound.bind(this)
         this.playBell = this.playBell.bind(this)
         this.stopSound = this.stopSound.bind(this)
-
+        this.state = {
+            toggleSound: true
+        };
         // console.log('WORKOUT EKRANI BASLATILDI')
     }
+
 
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
@@ -68,6 +71,7 @@ export default class Workout extends Component {
                 console.log('not null')
             }
         })
+
     }
     componentWillUnmount() {
         this.props.navigation.removeListener('focus', () => {
@@ -196,7 +200,7 @@ export default class Workout extends Component {
 
     }
 
-    render() {        
+    render() {
         tickSound.setVolume(this.props.SettingsStore.VOLUME);
         bellSound.setVolume(this.props.SettingsStore.VOLUME);
         const { container, buttons, progressBarText } = styles;
@@ -210,6 +214,26 @@ export default class Workout extends Component {
                         :
                         <Header title={this.props.SettingsStore.GREEN_TITLE} color={(BREAK_CIRCLE_FULL)}></Header>
                     }
+                    {/* TOGGLE SOUND */}
+                    {/* <TouchableOpacity
+                        style={{ position: 'absolute', top: windowHeight / 7, left: 30, zIndex: 5 }}
+                        onPress={() => {
+                            if (this.props.SettingsStore.VOLUME == 0) {
+                                this.props.SettingsStore.changeVolume(1);
+
+                                console.log('ses kapa')
+                            } else if (this.props.SettingsStore.VOLUME == 1) {
+                                this.props.SettingsStore.changeVolume(0);
+                                console.log('ses ac')
+                            }
+                        }}>
+                        {
+                            !this.props.SettingsStore.BREAK_STAGE ?
+                                <Icon name="volume_up" size={30} color={BREAK_CIRCLE_FULL} />
+                                :
+                                <Icon name="volume_mute" size={30} color={WORKOUT_CIRCLE_FULL} />
+                        }
+                    </TouchableOpacity> */}
 
                     {/* TOGGLE STAGE */}
                     <TouchableOpacity

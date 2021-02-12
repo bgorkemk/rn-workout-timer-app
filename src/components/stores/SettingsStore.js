@@ -39,6 +39,7 @@ class SettingsStore {
     @observable GREEN_TITLE = "";
     @observable ADD_SECONDS = 1;
     @observable VOLUME = 1;
+    @observable VOLUME_STAGE = true;
     @observable BREAK_STAGE = false;
     @observable START_AFTER_RESET = false;
     @observable TIMER_RUNNING = false;
@@ -309,6 +310,7 @@ class SettingsStore {
 
         // console.log(objectCount);
     }
+
     @action removeDays(value) {
         // for (const prop of Object.getOwnPropertyNames(this.DAYS)) {
         //     delete this.DAYS[prop];
@@ -321,6 +323,35 @@ class SettingsStore {
         delete this.DAYS_[Object.getOwnPropertyNames(value[0])];
         objectCount--;
 
+    }
+
+    @action changeVolumeStage(val) {
+        this.VOLUME_STAGE = val;
+    }
+
+    @action changeVolume(val) {
+        this.VOLUME = val;
+    }
+
+    @action toggleVolume = async () => {
+        try {
+            let tempData = parseInt(await AsyncStorage.getItem('VOLUME'));
+            if (tempData == 1) {
+                await AsyncStorage.setItem('VOLUME', '0');
+                this.changeVolume(0);
+                this.changeVolumeStage(false);
+            }
+            else if (tempData == 0) {
+                await AsyncStorage.setItem('VOLUME', '1');
+                this.changeVolume(1);
+                this.changeVolumeStage(true);
+            }
+            else {
+                // DO NOTHING
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     setAppSettings = async (data) => {
@@ -351,6 +382,17 @@ class SettingsStore {
             this.GREEN_TITLE = await AsyncStorage.getItem('GREEN_TITLE')
             this.ADD_SECONDS = parseInt(await AsyncStorage.getItem('ADD_SECONDS'))
             this.VOLUME = parseInt(await AsyncStorage.getItem('VOLUME'))
+            if (this.VOLUME == 1) {
+                this.changeVolume(1);
+                this.changeVolumeStage(true);
+            }
+            else if (this.VOLUME == 0) {
+                this.changeVolume(0);
+                this.changeVolumeStage(false);
+            }
+            else {
+                // DO NOTHING
+            }
         } catch (error) {
 
         }

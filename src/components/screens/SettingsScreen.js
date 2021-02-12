@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppStyles from '../../styles/AppStyles';
 import SettingElement from '../SettingElement';
+import SoundButton from '../SoundButton';
 import { clearInterval } from './WorkoutScreen';
 
 const {
@@ -50,6 +51,9 @@ export default class Settings extends Component {
                     {/* Red Title: Text Allowed */}
                     {/* keyboardType: number-pad, default */}
                     {/* maxLength default: 9, number recommend: X, text recommend: 9 */}
+
+                    {/* Sound Title */}
+                    <SoundButton title="Sound"/>
 
                     {/* Workout Title */}
                     <SettingElement title="Red Title" placeholder={this.props.SettingsStore.RED_TITLE} value={this.props.SettingsStore.Changed_RED_TITLE} keyboardType="default" type="RED_TITLE" maxLength={9} />
@@ -104,7 +108,7 @@ const styles = StyleSheet.create({
         flex: 9,
         width: windowWidth,
         top: 20,
-        marginTop: 20,
+        marginTop: 10,
         marginBottom: 30,
         flexDirection: 'column',
     },

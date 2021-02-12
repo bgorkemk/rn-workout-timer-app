@@ -58,7 +58,7 @@ export default class App extends Component {
       <Provider SettingsStore={SettingsStore}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName="Workout"
+            initialRouteName="Info"
             tabBar={props => <CustomTabBar {...props} />}>
             <Tab.Screen
               name="Info"              >
