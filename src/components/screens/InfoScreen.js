@@ -1,8 +1,9 @@
-import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
+import { AdEventType, InterstitialAd } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import AD_UNIT from '../../AD_UNIT';
 import AppStyles from '../../styles/AppStyles';
 import { clearInterval } from './WorkoutScreen';
 
@@ -27,7 +28,8 @@ const dayFormat = {
 let newDate = {}
 let temp = [];
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+const adUnitId = AD_UNIT;
+
 
 //TODO gün secilince blue markla sonra button ile spor yaptım yapmadım kaydedebilsin 
 
@@ -82,7 +84,10 @@ export default class Info extends Component {
         }
         const { container, calendarStyle, headerStyle, headerTextStyle, buttonContainer, buttonContent, buttonText } = styles;
         return (
-            <View style={container}>
+            <SafeAreaView style={container}>
+                <StatusBar
+                    backgroundColor={BACKGROUND_COLOR}
+                />
                 <View style={headerStyle}>
                     <Text style={headerTextStyle}>Calendar</Text>
                 </View>
@@ -168,7 +173,7 @@ export default class Info extends Component {
                         }
                     </TouchableOpacity>
                 </View>
-            </View >
+            </SafeAreaView >
         )
     }
 }

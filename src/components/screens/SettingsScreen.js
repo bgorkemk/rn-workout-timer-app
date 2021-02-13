@@ -1,7 +1,8 @@
-import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
+import { AdEventType, InterstitialAd } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { Alert, Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import AD_UNIT from '../../AD_UNIT';
 import AppStyles from '../../styles/AppStyles';
 import SettingElement from '../SettingElement';
 import SoundButton from '../SoundButton';
@@ -20,7 +21,7 @@ const {
     BORDER_RADIUS
 } = AppStyles
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+const adUnitId = AD_UNIT;
 
 
 @inject('SettingsStore')
@@ -61,7 +62,10 @@ export default class Settings extends Component {
     render() {
         const { container, scrollViewContainer, buttonContainer, buttonContent, buttonText, headerStyle, headerTextStyle } = styles;
         return (
-            <View style={container}>
+            <SafeAreaView style={container}>
+                <StatusBar
+                    backgroundColor={BACKGROUND_COLOR}
+                />
                 <View style={headerStyle}>
                     <Text style={headerTextStyle}>Settings</Text>
                 </View>
@@ -122,8 +126,18 @@ export default class Settings extends Component {
                     <TouchableOpacity
                         style={buttonContent}
                         onPress={() => {
-                            this.props.SettingsStore.applySettings()
-                            Keyboard.dismiss();
+                            Alert.alert(
+                                'Settings changed!',
+                                'Your settings have changed.',
+                                [
+                                    {
+                                        text: 'OK!', onPress: () => {
+                                            this.props.SettingsStore.applySettings()
+                                            Keyboard.dismiss();
+                                        }
+                                    },
+                                ]
+                            );
 
                         }}>
                         <Text
@@ -136,7 +150,7 @@ export default class Settings extends Component {
                 {/* <View style={buttonContainer}>
                     
                 </View> */}
-            </View>
+            </SafeAreaView>
         )
     }
 }

@@ -1,11 +1,12 @@
-import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
+import { AdEventType, InterstitialAd } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Sound from 'react-native-sound';
 import { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AD_UNIT from '../../AD_UNIT';
 import AppStyles from '../../styles/AppStyles';
 import Button from '../Button';
 import Header from '../Header';
@@ -38,7 +39,7 @@ let fillpercentWorkout;
 let number;
 let intervalCounter = null;
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+const adUnitId = AD_UNIT;
 
 
 @inject('SettingsStore')
@@ -226,7 +227,10 @@ export default class Workout extends Component {
             fillpercentWorkout = (this.props.SettingsStore.fillRatioWorkout / this.props.SettingsStore.NEW_MAX_POINTS_WORKOUT) * 100;
             fillpercentBreak = (this.props.SettingsStore.fillRatioBreak / this.props.SettingsStore.NEW_MAX_POINTS_BREAK) * 100;
             return (
-                <View style={[container, { zIndex: -1 }]}>
+                <SafeAreaView style={[container, { zIndex: -1 }]}>
+                    <StatusBar
+                        backgroundColor={BACKGROUND_COLOR}
+                    />
                     {!this.props.SettingsStore.BREAK_STAGE ?
                         <Header title={this.props.SettingsStore.RED_TITLE} color={(WORKOUT_CIRCLE_FULL)}></Header>
                         :
@@ -370,7 +374,7 @@ export default class Workout extends Component {
                         {/* RESET BUTTON */}
                         <Button title="addbutton" text={`+${this.props.SettingsStore.ADD_SECONDS}`} func={this.addSeconds} color={BUTTON_ADD_COLOR} width={WORKOUT_BUTTON_WIDTH} />
                     </View>
-                </View>
+                </SafeAreaView>
             )
         }
         else {
