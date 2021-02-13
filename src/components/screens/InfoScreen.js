@@ -1,10 +1,11 @@
-import { InterstitialAd, TestIds } from '@react-native-firebase/admob';
+import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AppStyles from '../../styles/AppStyles';
 import { clearInterval } from './WorkoutScreen';
+
 const {
     windowWidth,
     windowHeight,
@@ -23,22 +24,10 @@ const dayFormat = {
     }
 }
 
-let markedDays = {
-    // "2020-11-01": { "selected": true }, 
-    // "2020-11-02": { "selected": true } 
-}
-
 let newDate = {}
 let temp = [];
-let tempObj = {}
-
 
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
-
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-    requestNonPersonalizedAdsOnly: true,
-    keywords: ['fashion', 'clothing'],
-});
 
 //TODO gün secilince blue markla sonra button ile spor yaptım yapmadım kaydedebilsin 
 
@@ -48,12 +37,12 @@ export default class Info extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            switchRef: false
+            switchRef: false,
+            adLoaded: false
         }
     }
 
     componentDidMount() {
-        interstitial.load();
         this.props.navigation.addListener('focus', () => {
             clearInterval();
             // this.setState({
@@ -61,19 +50,35 @@ export default class Info extends Component {
             // })
         })
     }
+
     componentWillUnmount() {
         this.props.navigation.removeListener('focus', () => {
             // console.log('removed listener')
         })
     }
 
+    showInterstitialAd = () => {
+        // Create a new instance
+        const interstitialAd = InterstitialAd.createForAdRequest(adUnitId);
+        // Add event handlers
+        interstitialAd.onAdEvent((type, error) => {
+            if (type === AdEventType.LOADED) {
+                interstitialAd.show();
+                this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
+            }
+            else {
+                // console.log('Ad yüklenmedi')
+            }
+        });
+
+        // Load a new advert
+        interstitialAd.load();
+    }
 
 
     render() {
-        if (this.props.SettingsStore.ADS_COUNTER % 10 == 0) {
-            // SHOW ADS
-            //interstitial.show();
-            console.log('BOOM')
+        if (this.props.SettingsStore.ADS_COUNTER % 30 == 0) {
+            this.showInterstitialAd();
         }
         const { container, calendarStyle, headerStyle, headerTextStyle, buttonContainer, buttonContent, buttonText } = styles;
         return (
@@ -142,11 +147,8 @@ export default class Info extends Component {
                                     },
                                     {
                                         text: 'YES', onPress: () => {
+                                            this.showInterstitialAd();
                                             this.props.SettingsStore.removeSavedDates();
-                                            interstitial.show();
-                                            // this.setState({
-                                            //     switchRef: !this.state.switchRef
-                                            // });
                                         }
                                     },
                                 ]
@@ -157,11 +159,12 @@ export default class Info extends Component {
                                 <Text
                                     style={buttonText}>
                                     Total: {this.props.SettingsStore.totalWorkout} Day
-                            </Text> :
+                                </Text>
+                                :
                                 <Text
                                     style={buttonText}>
                                     Total: {this.props.SettingsStore.totalWorkout} Days
-                            </Text>
+                                </Text>
                         }
                     </TouchableOpacity>
                 </View>
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
         backgroundColor: HEADER_COLOR
     },
     headerTextStyle: {
-        fontSize: 45,
+        fontSize: 50,
         color: FONT_COLOR,
         fontWeight: 'bold'
     },

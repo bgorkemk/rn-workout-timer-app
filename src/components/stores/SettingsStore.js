@@ -13,7 +13,6 @@ const appSettings_default = {
     VOLUME: "1",
     FIRST_TIME: "FIRST_TIME"
 }
-let obj = {}
 let propertyNames;
 
 let objectCount;
@@ -62,20 +61,18 @@ class SettingsStore {
     // @observable Changed_TIMER_INTERVAL = 1;
     @observable Changed_ADD_SECONDS = 1;
 
-    // MAKE DEFAUT BUTTON
-    // TIMER INTERVALİN 100DEN KÜCÜK OLMAMA KONTROLÜ
-    @observable ADS_COUNTER = 0;
+    @observable ADS_COUNTER = 1;
 
     @action async ADS_COUNTER_INCREAMENT() {
         this.ADS_COUNTER = await AsyncStorage.getItem('ADS_COUNTER');
 
         if (this.ADS_COUNTER == null) {
-            this.ADS_COUNTER = 0;
+            this.ADS_COUNTER = 1;
             await AsyncStorage.setItem('ADS_COUNTER', this.ADS_COUNTER.toString());
         }
         else {
             if (this.ADS_COUNTER >= 250) {
-                this.ADS_COUNTER = 0;
+                this.ADS_COUNTER = 1;
             }
             try {
                 let number = parseInt(this.ADS_COUNTER);
@@ -216,6 +213,7 @@ class SettingsStore {
     @action toggleAppStage() {
         if (this.BREAK_STAGE || !this.BREAK_STAGE) {
             this.BREAK_STAGE = !this.BREAK_STAGE
+            this.ADS_COUNTER_INCREAMENT();
             this.getAppSettings();
         }
         if (this.TIMER_RUNNING) {

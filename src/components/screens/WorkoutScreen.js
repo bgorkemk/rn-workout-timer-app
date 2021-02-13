@@ -1,3 +1,4 @@
+import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -9,8 +10,6 @@ import AppStyles from '../../styles/AppStyles';
 import Button from '../Button';
 import Header from '../Header';
 
-
-// TODO: MUTE SOUND BUTTON LIKE TOGGLE SCREEN
 const {
     windowWidth,
     windowHeight,
@@ -33,16 +32,13 @@ const {
 const tickSound = new Sound('tick.mp3');
 const bellSound = new Sound('bell.mp3');
 
-
 let fillpercentBreak;
 let fillpercentWorkout;
 let number;
 let intervalCounter = null;
 
-export function clearInterval() {
-    window.clearInterval(intervalCounter);
-    intervalCounter = null
-}
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
 
 @inject('SettingsStore')
 @observer
@@ -56,29 +52,29 @@ export default class Workout extends Component {
         this.playBell = this.playBell.bind(this)
         this.stopSound = this.stopSound.bind(this)
         this.state = {
-            toggleSound: true
+            toggleSound: true,
         };
         // console.log('WORKOUT EKRANI BASLATILDI')
     }
 
-
     componentDidMount() {
+
         this.props.navigation.addListener('focus', () => {
             if (intervalCounter == null) {
                 this.props.SettingsStore.changeTimerRunning(false)
             }
             else {
-                console.log('not null')
+                // console.log('not null')
             }
         })
 
     }
+
     componentWillUnmount() {
         this.props.navigation.removeListener('focus', () => {
             // console.log('removed listener')
         })
     }
-
 
     playSound() {
         tickSound.play()
@@ -161,7 +157,7 @@ export default class Workout extends Component {
                 this.props.SettingsStore.changeValueNewMaxWorkout(this.props.SettingsStore.fillRatioWorkout)
             }
         }
-        this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
+        // this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
     }
 
     startStop() {
@@ -173,7 +169,7 @@ export default class Workout extends Component {
             clearInterval()
             this.props.SettingsStore.changeTimerRunning(false)
         }
-        this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
+        // this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
     }
 
     resetProgressBar() {
@@ -200,7 +196,28 @@ export default class Workout extends Component {
 
     }
 
+    showInterstitialAd = () => {
+        // Create a new instance
+        const interstitialAd = InterstitialAd.createForAdRequest(adUnitId);
+        // Add event handlers
+        interstitialAd.onAdEvent((type, error) => {
+            if (type === AdEventType.LOADED) {
+                this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
+                interstitialAd.show();
+            }
+            else {
+                // console.log('Ad yüklenmedi')
+            }
+        });
+
+        // Load a new advert
+        interstitialAd.load();
+    }
+
     render() {
+        if (this.props.SettingsStore.ADS_COUNTER % 15 == 0) {
+            this.showInterstitialAd();
+        }
         tickSound.setVolume(this.props.SettingsStore.VOLUME);
         bellSound.setVolume(this.props.SettingsStore.VOLUME);
         const { container, buttons, progressBarText } = styles;
@@ -241,7 +258,7 @@ export default class Workout extends Component {
                         onPress={() => {
                             clearInterval()
                             this.props.SettingsStore.toggleAppStage();
-                            this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
+                            // this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
                         }}
                     >
                         {
@@ -363,6 +380,11 @@ export default class Workout extends Component {
 
 
     }
+}
+
+export function clearInterval() {
+    window.clearInterval(intervalCounter);
+    intervalCounter = null
 }
 
 const styles = StyleSheet.create({

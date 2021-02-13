@@ -5,7 +5,7 @@ const AppStyles = {
     windowWidth: Dimensions.get('window').width,
     windowHeight: Dimensions.get('window').height,
     // COLOR PALETTE
-    BACKGROUND_COLOR: '#263238',
+    BACKGROUND_COLOR: '#22272c',
     HEADER_COLOR: '#546E7A',
 
     WORKOUT_CIRCLE_FULL: "#AD100B",

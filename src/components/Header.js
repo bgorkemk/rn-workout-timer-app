@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     opacity: 0.95,
   },
   headerText: {
-    fontSize: 45,
+    fontSize: 55,
     fontWeight: 'bold',
     color: FONT_COLOR,
   }

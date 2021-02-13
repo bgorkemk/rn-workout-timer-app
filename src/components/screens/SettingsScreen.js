@@ -1,6 +1,7 @@
+import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppStyles from '../../styles/AppStyles';
 import SettingElement from '../SettingElement';
 import SoundButton from '../SoundButton';
@@ -23,6 +24,9 @@ const {
     BORDER_RADIUS
 } = AppStyles
 
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
+
 @inject('SettingsStore')
 @observer
 export default class Settings extends Component {
@@ -40,6 +44,24 @@ export default class Settings extends Component {
             // console.log('removed listener')
         })
     }
+
+    showInterstitialAd = () => {
+        // Create a new instance
+        const interstitialAd = InterstitialAd.createForAdRequest(adUnitId);
+        // Add event handlers
+        interstitialAd.onAdEvent((type, error) => {
+            if (type === AdEventType.LOADED) {
+                interstitialAd.show();
+            }
+            else {
+                // console.log('Ad yüklenmedi')
+            }
+        });
+
+        // Load a new advert
+        interstitialAd.load();
+    }
+
     render() {
         const { container, scrollViewContainer, buttonContainer, buttonContent, buttonText, headerStyle, headerTextStyle } = styles;
         return (
@@ -47,13 +69,14 @@ export default class Settings extends Component {
                 <View style={headerStyle}>
                     <Text style={headerTextStyle}>Settings</Text>
                 </View>
+
                 <ScrollView style={scrollViewContainer} contentContainerStyle={{ alignItems: 'center' }}>
                     {/* Red Title: Text Allowed */}
                     {/* keyboardType: number-pad, default */}
                     {/* maxLength default: 9, number recommend: X, text recommend: 9 */}
 
                     {/* Sound Title */}
-                    <SoundButton title="Sound"/>
+                    <SoundButton title="Sound" />
 
                     {/* Workout Title */}
                     <SettingElement title="Red Title" placeholder={this.props.SettingsStore.RED_TITLE} value={this.props.SettingsStore.Changed_RED_TITLE} keyboardType="default" type="RED_TITLE" maxLength={9} />
@@ -62,10 +85,10 @@ export default class Settings extends Component {
                     <SettingElement title="Green Title" placeholder={this.props.SettingsStore.GREEN_TITLE} value={this.props.SettingsStore.Changed_GREEN_TITLE} keyboardType="default" type="GREEN_TITLE" maxLength={9} />
 
                     {/* Workout Time */}
-                    <SettingElement title={`${this.props.SettingsStore.RED_TITLE} Time`} placeholder={this.props.SettingsStore.MAX_POINTS_WORKOUT} value={this.props.SettingsStore.Changed_MAX_POINTS_WORKOUT} keyboardType="number-pad" type="MAX_POINTS_WORKOUT" maxLength={5} />
+                    <SettingElement title={`${this.props.SettingsStore.RED_TITLE != null ? this.props.SettingsStore.RED_TITLE : 'Red'} Time`} placeholder={this.props.SettingsStore.MAX_POINTS_WORKOUT} value={this.props.SettingsStore.Changed_MAX_POINTS_WORKOUT} keyboardType="number-pad" type="MAX_POINTS_WORKOUT" maxLength={5} />
 
                     {/* Break Time */}
-                    <SettingElement title={`${this.props.SettingsStore.GREEN_TITLE} Time`} placeholder={this.props.SettingsStore.MAX_POINTS_BREAK} value={this.props.SettingsStore.Changed_MAX_POINTS_BREAK} keyboardType="number-pad" type="MAX_POINTS_BREAK" maxLength={5} />
+                    <SettingElement title={`${this.props.SettingsStore.GREEN_TITLE != null ? this.props.SettingsStore.GREEN_TITLE : 'Green'} Time`} placeholder={this.props.SettingsStore.MAX_POINTS_BREAK} value={this.props.SettingsStore.Changed_MAX_POINTS_BREAK} keyboardType="number-pad" type="MAX_POINTS_BREAK" maxLength={5} />
 
                     {/* Timer Interval */}
                     {/* <SettingElement title="Timer Interval" placeholder={this.props.SettingsStore.TIMER_INTERVAL} value={this.props.SettingsStore.Changed_TIMER_INTERVAL} keyboardType="number-pad" type="TIMER_INTERVAL" maxLength={8} /> */}
@@ -76,6 +99,7 @@ export default class Settings extends Component {
                     {/* RESET SETTINGS */}
                     <TouchableOpacity onPress={() => {
                         this.props.SettingsStore.defaultSettings()
+                        this.showInterstitialAd();
                     }} style={[headerStyle, { width: windowWidth - 40, marginBottom: 30, backgroundColor: BUTTON_RESET_COLOR }]}>
                         <Text style={[headerTextStyle, { fontSize: 30 }]}>Reset Settings</Text>
                     </TouchableOpacity>
@@ -84,7 +108,11 @@ export default class Settings extends Component {
                 <View style={buttonContainer}>
                     <TouchableOpacity
                         style={buttonContent}
-                        onPress={() => this.props.SettingsStore.applySettings()}>
+                        onPress={() => {
+                            this.props.SettingsStore.applySettings()
+                            Keyboard.dismiss();
+
+                        }}>
                         <Text
                             style={buttonText}>
                             Apply Settings
@@ -123,7 +151,7 @@ const styles = StyleSheet.create({
         backgroundColor: HEADER_COLOR
     },
     headerTextStyle: {
-        fontSize: 45,
+        fontSize: 50,
         color: FONT_COLOR,
         fontWeight: 'bold'
     },
