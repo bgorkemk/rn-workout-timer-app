@@ -26,7 +26,8 @@ const {
     CIRCLE_WIDTH,
     BUTTON_ADD_COLOR,
     BUTTON_RESET_COLOR,
-    WORKOUT_BUTTON_WIDTH
+    WORKOUT_BUTTON_WIDTH,
+    FONT_COLOR
 } = AppStyles;
 
 const tickSound = new Sound('tick.mp3');
@@ -254,7 +255,7 @@ export default class Workout extends Component {
 
                     {/* TOGGLE STAGE */}
                     <TouchableOpacity
-                        style={{ position: 'absolute', top: windowHeight / 7, right: 30, zIndex: 5 }}
+                        style={{ position: 'absolute', top: windowHeight / 7.5, right: 15, zIndex: 5 }}
                         onPress={() => {
                             clearInterval()
                             this.props.SettingsStore.toggleAppStage();
@@ -263,9 +264,9 @@ export default class Workout extends Component {
                     >
                         {
                             !this.props.SettingsStore.BREAK_STAGE ?
-                                <Icon name="human-handsdown" size={30} color={BREAK_CIRCLE_FULL} />
+                                <Icon name="human-handsdown" size={35} color={FONT_COLOR} />
                                 :
-                                <Icon name="human-handsup" size={30} color={WORKOUT_CIRCLE_FULL} />
+                                <Icon name="human-handsup" size={35} color={FONT_COLOR} />
 
                         }
                     </TouchableOpacity>

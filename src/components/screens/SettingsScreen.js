@@ -1,7 +1,7 @@
 import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppStyles from '../../styles/AppStyles';
 import SettingElement from '../SettingElement';
 import SoundButton from '../SoundButton';
@@ -13,13 +13,9 @@ const {
     BACKGROUND_COLOR,
     FONT_COLOR,
     HEADER_COLOR,
-    CIRCLE_COLOR,
-    COMMON_TINT,
     SETTINGS_BUTTON_WIDTH,
     BUTTON_RESET_COLOR,
-    SETTINGS_ELEMENT_HEIGHT,
-    COLOR_SETTINGS_ELEMENT_TEXT,
-    COLOR_SETTINGS_ELEMENT_INPUT,
+    BUTTON_ADD_COLOR,
     WORKOUT_BUTTON_HEIGHT,
     BORDER_RADIUS
 } = AppStyles
@@ -98,14 +94,31 @@ export default class Settings extends Component {
 
                     {/* RESET SETTINGS */}
                     <TouchableOpacity onPress={() => {
-                        this.props.SettingsStore.defaultSettings()
-                        this.showInterstitialAd();
+                        Alert.alert(
+                            'Default Settings!',
+                            'Do you really reset your configure?',
+                            [
+                                {
+                                    text: 'No',
+                                    onPress: () => {
+                                        // close alert
+                                    },
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'YES', onPress: () => {
+                                        this.props.SettingsStore.defaultSettings()
+                                        this.showInterstitialAd();
+                                    }
+                                },
+                            ]
+                        );
+
                     }} style={[headerStyle, { width: windowWidth - 40, marginBottom: 30, backgroundColor: BUTTON_RESET_COLOR }]}>
                         <Text style={[headerTextStyle, { fontSize: 30 }]}>Reset Settings</Text>
                     </TouchableOpacity>
-                </ScrollView>
 
-                <View style={buttonContainer}>
+                    {/* APPLY SETTINGS */}
                     <TouchableOpacity
                         style={buttonContent}
                         onPress={() => {
@@ -118,7 +131,11 @@ export default class Settings extends Component {
                             Apply Settings
                         </Text>
                     </TouchableOpacity>
-                </View>
+                </ScrollView>
+
+                {/* <View style={buttonContainer}>
+                    
+                </View> */}
             </View>
         )
     }
@@ -169,7 +186,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         borderRadius: BORDER_RADIUS,
         opacity: 0.9,
-        backgroundColor: HEADER_COLOR
+        backgroundColor: BUTTON_ADD_COLOR
     },
     buttonText: {
         fontSize: 30,

@@ -82,7 +82,7 @@ class SettingsStore {
 
             }
         }
-        console.log(this.ADS_COUNTER)
+        // console.log(this.ADS_COUNTER)
     }
 
     @action async applySettings() {
@@ -363,7 +363,7 @@ class SettingsStore {
             await AsyncStorage.setItem('ADD_SECONDS', data.ADD_SECONDS)
             await AsyncStorage.setItem('VOLUME', data.VOLUME)
             await AsyncStorage.setItem('FIRST_TIME', data.FIRST_TIME)
-            console.log('YENİ AYARLAR KAYDEDİLDİ')
+            // console.log('YENİ AYARLAR KAYDEDİLDİ')
         } catch (error) {
 
         }

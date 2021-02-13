@@ -180,10 +180,10 @@ const styles = StyleSheet.create({
         backgroundColor: BACKGROUND_COLOR
     },
     calendarStyle: {
-        marginTop: 50,
-        borderWidth: 2,
-        borderColor: 'gray',
-        borderRadius: 15,
+        marginTop: windowHeight / 11,
+        borderWidth: 5,
+        borderColor: HEADER_COLOR,
+        borderRadius: BORDER_RADIUS,
         width: windowWidth - 20,
         height: windowHeight / 2 - 10
     },
@@ -203,8 +203,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     buttonContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'flex-end'
     },
     buttonContent: {
         height: WORKOUT_BUTTON_HEIGHT,
@@ -212,8 +212,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         justifyContent: 'center',
-        bottom: 0,
-        marginTop: 91,
+        marginBottom: 10,
+        marginTop: 5,
         borderRadius: BORDER_RADIUS,
         opacity: 0.9,
         backgroundColor: HEADER_COLOR
