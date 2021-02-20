@@ -1,4 +1,3 @@
-import { AdEventType, InterstitialAd } from '@react-native-firebase/admob';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -6,7 +5,6 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Sound from 'react-native-sound';
 import { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AD_UNIT from '../../AD_UNIT';
 import AppStyles from '../../styles/AppStyles';
 import Button from '../Button';
 import Header from '../Header';
@@ -39,7 +37,7 @@ let fillpercentWorkout;
 let number;
 let intervalCounter = null;
 
-const adUnitId = AD_UNIT;
+// const adUnitId = AD_UNIT;
 
 
 @inject('SettingsStore')
@@ -198,28 +196,28 @@ export default class Workout extends Component {
 
     }
 
-    showInterstitialAd = () => {
-        // Create a new instance
-        const interstitialAd = InterstitialAd.createForAdRequest(adUnitId);
-        // Add event handlers
-        interstitialAd.onAdEvent((type, error) => {
-            if (type === AdEventType.LOADED) {
-                this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
-                interstitialAd.show();
-            }
-            else {
-                // console.log('Ad yüklenmedi')
-            }
-        });
+    // showInterstitialAd = () => {
+    //     // Create a new instance
+    //     const interstitialAd = InterstitialAd.createForAdRequest(adUnitId);
+    //     // Add event handlers
+    //     interstitialAd.onAdEvent((type, error) => {
+    //         if (type === AdEventType.LOADED) {
+    //             this.props.SettingsStore.ADS_COUNTER_INCREAMENT();
+    //             interstitialAd.show();
+    //         }
+    //         else {
+    //             // console.log('Ad yüklenmedi')
+    //         }
+    //     });
 
-        // Load a new advert
-        interstitialAd.load();
-    }
+    //     // Load a new advert
+    //     interstitialAd.load();
+    // }
 
     render() {
-        if (this.props.SettingsStore.ADS_COUNTER % 15 == 0) {
-            this.showInterstitialAd();
-        }
+        // if (this.props.SettingsStore.ADS_COUNTER % 15 == 0) {
+        //     this.showInterstitialAd();
+        // }
         tickSound.setVolume(this.props.SettingsStore.VOLUME);
         bellSound.setVolume(this.props.SettingsStore.VOLUME);
         const { container, buttons, progressBarText } = styles;
@@ -259,7 +257,7 @@ export default class Workout extends Component {
 
                     {/* TOGGLE STAGE */}
                     <TouchableOpacity
-                        style={{ position: 'absolute', top: windowHeight / 7.5, right: 15, zIndex: 5 }}
+                        style={{ position: 'absolute', top: windowHeight / 7.5, right: 15, zIndex: 1000 }}
                         onPress={() => {
                             clearInterval()
                             this.props.SettingsStore.toggleAppStage();

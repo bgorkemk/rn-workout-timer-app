@@ -79,9 +79,9 @@ export default class Info extends Component {
 
 
     render() {
-        if (this.props.SettingsStore.ADS_COUNTER % 30 == 0) {
-            this.showInterstitialAd();
-        }
+        // if (this.props.SettingsStore.ADS_COUNTER % 30 == 0) {
+        //     this.showInterstitialAd();
+        // }
         const { container, calendarStyle, headerStyle, headerTextStyle, buttonContainer, buttonContent, buttonText } = styles;
         return (
             <SafeAreaView style={container}>
@@ -185,12 +185,12 @@ const styles = StyleSheet.create({
         backgroundColor: BACKGROUND_COLOR
     },
     calendarStyle: {
-        marginTop: windowHeight / 11,
+        marginTop: windowHeight / 12,
         borderWidth: 5,
         borderColor: HEADER_COLOR,
         borderRadius: BORDER_RADIUS,
         width: windowWidth - 20,
-        height: windowHeight / 2 - 10
+        height: windowHeight / 1.9
     },
     headerStyle: {
         top: 20,
