@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "473592183565",
+    "project_id": "workout-timer---global-timer",
+    "storage_bucket": "workout-timer---global-timer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473592183565:android:1ae047297eeca85fc40e44",
+        "android_client_info": {
+          "package_name": "com.workouttimerglobaltimer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473592183565-fqci9mi6svsilohafsh7lv31ukqa4236.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhNRMZllHqAeboC-O8Use2VGFIBWbIS_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473592183565-fqci9mi6svsilohafsh7lv31ukqa4236.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
