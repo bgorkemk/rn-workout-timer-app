@@ -7,6 +7,8 @@ import AppStyles from '../../styles/AppStyles';
 import SettingElement from '../SettingElement';
 import SoundButton from '../SoundButton';
 import { clearInterval } from './WorkoutScreen';
+import KeepAwake from 'react-native-keep-awake';
+
 
 const {
     windowWidth,
@@ -145,6 +147,7 @@ export default class Settings extends Component {
                             Apply Settings
                         </Text>
                     </TouchableOpacity>
+                    <KeepAwake/>
                 </ScrollView>
 
                 {/* <View style={buttonContainer}>

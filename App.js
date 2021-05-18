@@ -12,6 +12,7 @@ import Settings from './src/components/screens/SettingsScreen';
 import Workout from './src/components/screens/WorkoutScreen';
 import SettingsStore from './src/components/stores/SettingsStore';
 import AppStyles from './src/styles/AppStyles';
+
 const {
   FONT_COLOR,
   BACKGROUND_COLOR
@@ -55,8 +56,9 @@ export default class App extends Component {
     super(props);
   }
 
-  componentDidMount() {    
+  componentDidMount() {
     this.showInterstitialAd();
+    // useKeepAwake();
   }
 
   showInterstitialAd = () => {

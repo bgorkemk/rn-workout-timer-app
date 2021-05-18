@@ -12,6 +12,8 @@ target 'circularProgress' do
 
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
 
+  pod 'react-native-keep-awake', :path => '../node_modules/react-native-keep-awake'
+
   target 'circularProgressTests' do
     inherit! :complete
     # Pods for testing

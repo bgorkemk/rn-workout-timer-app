@@ -6,6 +6,7 @@ import { Calendar } from 'react-native-calendars';
 import AD_UNIT from '../../AD_UNIT';
 import AppStyles from '../../styles/AppStyles';
 import { clearInterval } from './WorkoutScreen';
+import KeepAwake from 'react-native-keep-awake';
 
 const {
     windowWidth,
@@ -173,6 +174,7 @@ export default class Info extends Component {
                         }
                     </TouchableOpacity>
                 </View>
+                <KeepAwake />
             </SafeAreaView >
         )
     }

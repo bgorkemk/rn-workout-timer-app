@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppStyles from '../../styles/AppStyles';
 import Button from '../Button';
 import Header from '../Header';
+import KeepAwake from 'react-native-keep-awake';
+
 
 const {
     windowWidth,
@@ -372,6 +374,7 @@ export default class Workout extends Component {
                         {/* RESET BUTTON */}
                         <Button title="addbutton" text={`+${this.props.SettingsStore.ADD_SECONDS}`} func={this.addSeconds} color={BUTTON_ADD_COLOR} width={WORKOUT_BUTTON_WIDTH} />
                     </View>
+                    <KeepAwake/>
                 </SafeAreaView>
             )
         }
