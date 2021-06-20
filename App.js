@@ -27,6 +27,7 @@ function WorkoutScreen() {
     </View>
   )
 }
+
 function SettingsScreen() {
   const { container } = styles
   // Settings
@@ -36,6 +37,7 @@ function SettingsScreen() {
     </View>
   )
 }
+
 function InfoScreen() {
   const { container } = styles
   // Info
@@ -50,14 +52,14 @@ const Tab = createBottomTabNavigator();
 
 const adUnitId = AD_UNIT;
 
-
 export default class App extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
-    this.showInterstitialAd();
+    RNBootSplash.hide(); // immediate
+    // this.showInterstitialAd();
     // useKeepAwake();
   }
 

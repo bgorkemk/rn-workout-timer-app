@@ -114,7 +114,7 @@ export default class Settings extends Component {
                                 {
                                     text: 'YES', onPress: () => {
                                         this.props.SettingsStore.defaultSettings()
-                                        this.showInterstitialAd();
+                                        // this.showInterstitialAd();
                                     }
                                 },
                             ]

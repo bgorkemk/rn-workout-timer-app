@@ -153,7 +153,7 @@ export default class Info extends Component {
                                     },
                                     {
                                         text: 'YES', onPress: () => {
-                                            this.showInterstitialAd();
+                                            // this.showInterstitialAd();
                                             this.props.SettingsStore.removeSavedDates();
                                         }
                                     },

@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'circularProgress' do
+target 'workouttimerglobaltimer' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
@@ -14,7 +14,7 @@ target 'circularProgress' do
 
   pod 'react-native-keep-awake', :path => '../node_modules/react-native-keep-awake'
 
-  target 'circularProgressTests' do
+  target 'workouttimerglobaltimerTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -29,10 +29,10 @@ target 'circularProgress' do
   end
 end
 
-target 'circularProgress-tvOS' do
-  # Pods for circularProgress-tvOS
+target 'workouttimerglobaltimer-tvOS' do
+  # Pods for workouttimerglobaltimer-tvOS
 
-  target 'circularProgress-tvOSTests' do
+  target 'workouttimerglobaltimer-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
